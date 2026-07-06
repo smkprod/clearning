@@ -1,0 +1,179 @@
+.intro {
+  color: var(--text-dim);
+  font-size: 13.5px;
+  margin-bottom: 16px;
+  max-width: 720px;
+}
+
+.overall {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.overallPct {
+  font-family: var(--font-mono);
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--track-backend);
+}
+
+.project {
+  margin-bottom: 12px;
+}
+
+.projectHeader {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.chevron {
+  font-family: var(--font-mono);
+  color: var(--text-faint);
+  flex: none;
+  margin-top: 2px;
+  transition: transform 0.15s;
+}
+
+.chevronOpen {
+  transform: rotate(90deg);
+}
+
+.projectBody {
+  flex: 1;
+  min-width: 0;
+}
+
+.projectTitleRow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.projectNum {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 700;
+  color: #fff;
+  background: var(--track-backend);
+  border-radius: 5px;
+  padding: 1px 7px;
+  flex: none;
+}
+
+.projectNumDone {
+  background: var(--ok);
+}
+
+.projectTitle {
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.projectGoal {
+  font-size: 13px;
+  color: var(--text-dim);
+  margin-top: 3px;
+}
+
+.projectMeta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 8px;
+}
+
+.weeks {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text-faint);
+}
+
+.miniProgress {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.miniProgressBar {
+  flex: 1;
+  max-width: 240px;
+}
+
+.stepCount {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text-faint);
+  white-space: nowrap;
+}
+
+.steps {
+  margin-top: 12px;
+  padding-left: 4px;
+}
+
+.step {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 7px 0;
+  cursor: pointer;
+  font-size: 13.5px;
+  border-bottom: 1px solid var(--border);
+}
+
+.step:last-of-type {
+  border-bottom: none;
+}
+
+.stepDone .stepLabel {
+  text-decoration: line-through;
+  color: var(--text-faint);
+}
+
+.stepLabel {
+  flex: 1;
+}
+
+.urls {
+  display: grid;
+  gap: 8px;
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px dashed var(--border-strong);
+}
+
+.urlRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.urlLabel {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text-faint);
+  width: 52px;
+  flex: none;
+}
+
+.currentTag {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--accent);
+  background: var(--accent-soft);
+  border: 1px solid rgba(62, 166, 255, 0.3);
+  border-radius: 999px;
+  padding: 1px 8px;
+  flex: none;
+}

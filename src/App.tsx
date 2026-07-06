@@ -5,17 +5,19 @@ import { Dashboard } from './screens/Dashboard';
 import { QueueScreen } from './screens/QueueScreen';
 import { FlashcardsScreen } from './screens/FlashcardsScreen';
 import { ActivityScreen } from './screens/ActivityScreen';
+import { ProjectsScreen } from './screens/ProjectsScreen';
 import { JobScreen } from './screens/JobScreen';
 import { SettingsScreen } from './screens/SettingsScreen';
 import { WorkTimer } from './components/WorkTimer';
 import { isDue } from './utils/leitner';
 import { todayStr } from './utils/date';
 
-type Screen = 'dashboard' | 'queue' | 'cards' | 'activity' | 'job' | 'settings';
+type Screen = 'dashboard' | 'queue' | 'projects' | 'cards' | 'activity' | 'job' | 'settings';
 
 const SCREENS: { id: Screen; label: string }[] = [
   { id: 'dashboard', label: 'Дашборд' },
   { id: 'queue', label: 'Очередь' },
+  { id: 'projects', label: 'Проекты' },
   { id: 'cards', label: 'Карточки' },
   { id: 'activity', label: 'Активность' },
   { id: 'job', label: 'Работа' },
@@ -55,8 +57,14 @@ function Shell() {
         </nav>
       </header>
 
-      {screen === 'dashboard' && <Dashboard onNavigateCards={() => setScreen('cards')} />}
+      {screen === 'dashboard' && (
+        <Dashboard
+          onNavigateCards={() => setScreen('cards')}
+          onNavigateProjects={() => setScreen('projects')}
+        />
+      )}
       {screen === 'queue' && <QueueScreen />}
+      {screen === 'projects' && <ProjectsScreen />}
       {screen === 'cards' && <FlashcardsScreen />}
       {screen === 'activity' && <ActivityScreen />}
       {screen === 'job' && <JobScreen />}

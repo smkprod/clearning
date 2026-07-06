@@ -1,8 +1,9 @@
-import type { AppState, Flashcard, Task } from '../types';
+import type { AppState, Flashcard, Project, Task } from '../types';
 import {
   CURRICULUM_CHALLENGES,
   CURRICULUM_FLASHCARDS,
   CURRICULUM_MILESTONES,
+  CURRICULUM_PROJECTS,
   CURRICULUM_TASKS,
   DEFAULT_DAILY_GOAL_MIN,
   DEFAULT_EXAM_DATE,
@@ -22,9 +23,30 @@ export function createInitialState(): AppState {
     challenges: CURRICULUM_CHALLENGES.map((c) => ({ ...c, solved: false })),
     milestones: CURRICULUM_MILESTONES.map((m) => ({ ...m, done: false })),
     applications: [],
+    projects: CURRICULUM_PROJECTS.map((p) => ({ ...p, repoUrl: '', liveUrl: '' })),
     logs: {},
     timerStartedAt: null,
   };
+}
+
+/**
+ * Проекты обновляются из сида по id: контент шагов свежий, но галочки
+ * (step.done) и введённые пользователем ссылки (repoUrl/liveUrl) сохраняются.
+ * Порядок канонический — берётся из сида.
+ */
+function mergeProjects(stored: Project[] | undefined, seeded: Project[]): Project[] {
+  const storedById = new Map((stored ?? []).map((p) => [p.id, p]));
+  return seeded.map((seed) => {
+    const prev = storedById.get(seed.id);
+    if (!prev) return seed;
+    const prevStep = new Map(prev.steps.map((s) => [s.id, s]));
+    return {
+      ...seed,
+      steps: seed.steps.map((s) => ({ ...s, done: prevStep.get(s.id)?.done ?? false })),
+      repoUrl: prev.repoUrl ?? '',
+      liveUrl: prev.liveUrl ?? '',
+    };
+  });
 }
 
 /**
@@ -81,6 +103,7 @@ export function hydrateState(raw: unknown): AppState {
     challenges: mergeById(stored.challenges ?? [], fresh.challenges, ['solved']),
     milestones: mergeById(stored.milestones ?? [], fresh.milestones, ['done']),
     applications: stored.applications ?? [],
+    projects: mergeProjects(stored.projects, fresh.projects),
     logs: stored.logs ?? {},
   };
 }

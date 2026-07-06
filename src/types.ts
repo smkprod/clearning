@@ -65,6 +65,23 @@ export interface DayLog {
   completedTaskIds: string[];
 }
 
+export interface ProjectStep {
+  id: string;
+  label: string; // что конкретно сделать на этом шаге
+  done: boolean;
+}
+
+export interface Project {
+  id: string;
+  title: string;
+  goal: string; // что у тебя будет в конце (одна фраза)
+  skills: Track[]; // какие треки проект задействует
+  estWeeks: number;
+  steps: ProjectStep[];
+  repoUrl: string; // ссылка на GitHub (заполняет пользователь)
+  liveUrl: string; // живой URL после деплоя
+}
+
 export interface AppState {
   createdAt: string;
   examDate: string; // '2026-11-25'
@@ -75,6 +92,7 @@ export interface AppState {
   challenges: DailyChallenge[];
   milestones: Milestone[];
   applications: Application[];
+  projects: Project[];
   logs: Record<string, DayLog>; // 'YYYY-MM-DD' -> DayLog
   /** ISO-время запуска таймера работы; null — таймер выключен */
   timerStartedAt?: string | null;

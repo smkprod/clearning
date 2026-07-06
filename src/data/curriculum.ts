@@ -1,4 +1,14 @@
-import type { DailyChallenge, Flashcard, Milestone, Task, TaskLink, Track, TaskType } from '../types';
+import type {
+  DailyChallenge,
+  Flashcard,
+  Milestone,
+  Project,
+  ProjectStep,
+  Task,
+  TaskLink,
+  Track,
+  TaskType,
+} from '../types';
 
 /**
  * Программа обучения: очередь задач, стартовые карточки, код-челленджи и майлстоуны.
@@ -552,6 +562,120 @@ export const CURRICULUM_FLASHCARDS: CardSeed[] = [
     'List<T>: O(n) — сдвигает все элементы. LinkedList<T>: O(1) — переставляет ссылки. Но List обычно быстрее на практике из-за кэш-локальности массива.'),
   f('fc-31', 'csharp', 'Интерфейс vs абстрактный класс — когда что?',
     'Интерфейс — контракт «умеет X», можно реализовать много. Абстрактный класс — общая база с состоянием и частичной реализацией, наследуется один. Нет общего кода → интерфейс.'),
+];
+
+// ── Проекты: позвоночник обучения ───────────────────────────────────────────
+/**
+ * Лестница проектов, которые пользователь строит САМ. Ежедневные задачи —
+ * это навыки (гаммы); проекты — где навыки складываются в живое приложение
+ * и в портфолио. Идут по нарастающей: консоль → API → БД+auth → тесты →
+ * деплой → фронт → доведение своих pet-проектов. Каждый даёт артефакт в CV.
+ */
+type ProjectSeed = Omit<Project, 'repoUrl' | 'liveUrl'>;
+
+const step = (id: string, label: string): ProjectStep => ({ id, label, done: false });
+
+export const CURRICULUM_PROJECTS: ProjectSeed[] = [
+  {
+    id: 'p1',
+    title: 'Ausgaben-Tracker (консоль)',
+    goal: 'Консольное приложение, которое хранит расходы в JSON-файле и считает статистику.',
+    skills: ['csharp'],
+    estWeeks: 1,
+    steps: [
+      step('p1-1', 'Модель Expense (record: дата, сумма, категория) и List<Expense> в памяти'),
+      step('p1-2', 'Меню в консоли: добавить / удалить / показать список'),
+      step('p1-3', 'Статистика через LINQ: сумма за месяц, разбивка по категориям'),
+      step('p1-4', 'Сохранение и загрузка из JSON-файла (System.Text.Json)'),
+      step('p1-5', 'Обработка ошибок: нет файла, битый JSON, неверный ввод'),
+      step('p1-6', 'README + первый push в GitHub'),
+    ],
+  },
+  {
+    id: 'p2',
+    title: 'Notes API (первый веб-бэкенд)',
+    goal: 'REST API с CRUD — твой первый ASP.NET Core бэкенд.',
+    skills: ['backend'],
+    estWeeks: 2,
+    steps: [
+      step('p2-1', 'dotnet new webapi, модель Note + DTO'),
+      step('p2-2', 'EF Core InMemory, DbContext, регистрация в DI'),
+      step('p2-3', 'CRUD-эндпоинты GET/POST/PUT/DELETE с правильными статус-кодами'),
+      step('p2-4', 'Проверь каждый эндпоинт руками через Swagger'),
+      step('p2-5', 'Проекция в DTO — не отдавай сущности наружу'),
+      step('p2-6', 'README с примерами запросов, push'),
+    ],
+  },
+  {
+    id: 'p3',
+    title: 'API вырастает: БД + валидация + auth',
+    goal: 'Тот же API, но production-shape: реальная БД, валидация, JWT-аутентификация.',
+    skills: ['backend', 'sql'],
+    estWeeks: 2,
+    steps: [
+      step('p3-1', 'Замени InMemory на SQLite/Postgres, включи миграции'),
+      step('p3-2', 'FluentValidation на все входные DTO'),
+      step('p3-3', 'JWT: регистрация, логин, [Authorize], роли'),
+      step('p3-4', 'Единая обработка ошибок (ProblemDetails)'),
+      step('p3-5', 'Пагинация, фильтр и сортировка на списочном эндпоинте'),
+      step('p3-6', 'Конфиг через appsettings + секреты в user secrets, не в git'),
+    ],
+  },
+  {
+    id: 'p4',
+    title: 'Тесты (дифференциатор для найма)',
+    goal: 'Проект, покрытый тестами — то, чего нет у большинства джунов.',
+    skills: ['tests'],
+    estWeeks: 1,
+    steps: [
+      step('p4-1', 'xUnit: unit-тесты на сервис по схеме AAA'),
+      step('p4-2', 'Moq: изолируй зависимости, проверь happy path и ошибку'),
+      step('p4-3', 'Integration-тесты эндпоинтов через WebApplicationFactory'),
+      step('p4-4', 'Зелёный dotnet test + badge покрытия в README'),
+    ],
+  },
+  {
+    id: 'p5',
+    title: 'Docker + Azure + CI/CD (главный проект)',
+    goal: 'Живой URL в облаке, который вставишь прямо в CV.',
+    skills: ['devops'],
+    estWeeks: 2,
+    steps: [
+      step('p5-1', 'Multi-stage Dockerfile, запусти контейнер локально'),
+      step('p5-2', 'docker-compose: API + БД поднимаются одной командой'),
+      step('p5-3', 'Деплой в Azure (App Service/Container Apps) + Azure SQL/Postgres'),
+      step('p5-4', 'GitHub Actions: build → test → deploy в main'),
+      step('p5-5', 'Health check, живой URL в README и CV'),
+    ],
+  },
+  {
+    id: 'p6',
+    title: 'Фронтенд: стань full-stack',
+    goal: 'React/TS интерфейс поверх твоего API — полноценный full-stack проект.',
+    skills: ['job'],
+    estWeeks: 2,
+    steps: [
+      step('p6-1', 'Vite + React + TS, страница со списком записей'),
+      step('p6-2', 'Fetch к твоему API, отображение данных, состояние загрузки'),
+      step('p6-3', 'Форма создания и редактирования'),
+      step('p6-4', 'Обработка ошибок и пустых состояний'),
+      step('p6-5', 'Задеплой фронт на Vercel, свяжи с бэкендом (CORS)'),
+    ],
+  },
+  {
+    id: 'p7',
+    title: 'Портфолио: доведи свои два проекта',
+    goal: 'Auslagenerstattung и Telegram Mini App готовы показать работодателю.',
+    skills: ['job'],
+    estWeeks: 1,
+    steps: [
+      step('p7-1', 'README на каждый: скриншоты, стек, запуск, архитектура в 5 строк'),
+      step('p7-2', 'Пойми и умей объяснить каждый слой без AI'),
+      step('p7-3', 'Задеплой оба, добудь живые ссылки'),
+      step('p7-4', 'Рассказ о каждом проекте за 2 минуты (запиши на диктофон)'),
+      step('p7-5', 'Ссылки в CV, LinkedIn и pinned на GitHub-профиле'),
+    ],
+  },
 ];
 
 // ── Майлстоуны готовности к работе ──────────────────────────────────────────

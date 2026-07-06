@@ -12,11 +12,12 @@ import { TASK_TYPE_LABELS } from '../types';
 
 interface Props {
   onNavigateCards(): void;
+  onNavigateProjects(): void;
 }
 
 type PendingDone = { kind: 'task' | 'challenge'; id: string; title: string; estMin?: number };
 
-export function Dashboard({ onNavigateCards }: Props) {
+export function Dashboard({ onNavigateCards, onNavigateProjects }: Props) {
   const { state, actions } = useAppState();
   const today = todayStr();
   const [pendingDone, setPendingDone] = useState<PendingDone | null>(null);
@@ -32,6 +33,11 @@ export function Dashboard({ onNavigateCards }: Props) {
   const todayTasks = useMemo(() => state.tasks.filter((t) => !t.done).slice(0, 2), [state.tasks]);
   const challenge = useMemo(() => state.challenges.find((c) => !c.solved), [state.challenges]);
   const dueCards = state.flashcards.filter((f) => isDue(f, today));
+  const currentProject = useMemo(
+    () => state.projects.find((p) => p.steps.some((s) => !s.done)),
+    [state.projects],
+  );
+  const nextStep = currentProject?.steps.find((s) => !s.done);
   const todayMinutes = state.logs[today]?.minutes ?? 0;
   const dayPct = (todayMinutes / state.dailyGoalMin) * 100;
   const minMarkPct = Math.min(100, (state.minDayMin / state.dailyGoalMin) * 100);
@@ -212,6 +218,24 @@ export function Dashboard({ onNavigateCards }: Props) {
             </button>
           )}
         </div>
+
+        {currentProject && (
+          <div className={`${styles.item} ${styles.cardsCta}`}>
+            <div>
+              <span className="track-badge" style={{ color: 'var(--track-backend)' }}>
+                <span className="track-dot" style={{ background: 'var(--track-backend)' }} />
+                текущий проект
+              </span>
+              <div className={styles.itemTitle}>{currentProject.title}</div>
+              <div className={styles.itemDetail}>
+                Следующий шаг: {nextStep ? nextStep.label : 'все шаги сделаны ✓'}
+              </div>
+            </div>
+            <button type="button" className="btn btn-sm" onClick={onNavigateProjects}>
+              К проекту →
+            </button>
+          </div>
+        )}
 
         {/* лог времени */}
         <div className={styles.logRow}>

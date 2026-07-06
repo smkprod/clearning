@@ -29,6 +29,8 @@ export interface AppActions {
   addFlashcard(track: Track, front: string, back: string): void;
   deleteFlashcard(cardId: string): void;
   toggleMilestone(milestoneId: string): void;
+  toggleProjectStep(projectId: string, stepId: string): void;
+  setProjectUrl(projectId: string, field: 'repoUrl' | 'liveUrl', value: string): void;
   addApplication(company: string, role: string): void;
   setApplicationStatus(appId: string, status: ApplicationStatus): void;
   deleteApplication(appId: string): void;
@@ -196,6 +198,31 @@ export function AppStateProvider({ children }: { children: ReactNode }) {
           ...s,
           milestones: s.milestones.map((m) =>
             m.id === milestoneId ? { ...m, done: !m.done } : m,
+          ),
+        }));
+      },
+
+      toggleProjectStep(projectId, stepId) {
+        update((s) => ({
+          ...s,
+          projects: s.projects.map((p) =>
+            p.id === projectId
+              ? {
+                  ...p,
+                  steps: p.steps.map((st) =>
+                    st.id === stepId ? { ...st, done: !st.done } : st,
+                  ),
+                }
+              : p,
+          ),
+        }));
+      },
+
+      setProjectUrl(projectId, field, value) {
+        update((s) => ({
+          ...s,
+          projects: s.projects.map((p) =>
+            p.id === projectId ? { ...p, [field]: value } : p,
           ),
         }));
       },
