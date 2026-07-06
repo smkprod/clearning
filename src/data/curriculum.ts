@@ -26,8 +26,14 @@ const l = (label: string, url: string): TaskLink => ({ label, url });
 
 // ── Track: algo — алгоритмы и решение задач ─────────────────────────────────
 const algo: TaskSeed[] = [
-  t('algo-01', 'algo', 'practice', 'Замерь коллекции: Big-O на практике',
-    'Напиши бенчмарк (Stopwatch, 1 млн элементов): Add / Contains / поиск для List, Dictionary, HashSet, Queue, Stack. Запиши результаты в таблицу и объясни Big-O каждой операции — когда какую коллекцию брать.', 90,
+  t('algo-w1', 'algo', 'practice', 'Секундомер Stopwatch: твой первый замер',
+    'Stopwatch — это просто секундомер из System.Diagnostics, им меряют скорость кода. Напиши консольку: var sw = Stopwatch.StartNew(); → цикл суммирует числа от 1 до 100 млн → sw.Stop() → выведи sw.ElapsedMilliseconds. Поменяй 100 млн на 1 млрд и посмотри, во сколько раз выросло время.', 30,
+    [l('MS Docs: Stopwatch', 'https://learn.microsoft.com/dotnet/api/system.diagnostics.stopwatch')]),
+  t('algo-w2', 'algo', 'practice', 'Big-O на пальцах: три цикла',
+    'Big-O отвечает на вопрос: «данных стало в 10 раз больше — во сколько раз замедлится код?». Напиши три метода: взять первый элемент массива (O(1) — всегда одинаково), найти число перебором (O(n) — растёт линейно), сравнить каждый элемент с каждым двумя вложенными циклами (O(n²)). Замерь каждый Stopwatch-ем на массивах 1 тыс / 10 тыс / 100 тыс и посмотри на рост времени — вот и вся магия Big-O.', 45,
+    [l('Big-O Cheat Sheet', 'https://www.bigocheatsheet.com/')]),
+  t('algo-01', 'algo', 'practice', 'List vs HashSet: почувствуй разницу',
+    'Ты уже умеешь Stopwatch и понял Big-O. Теперь заполни List<int> и HashSet<int> миллионом чисел и замерь у обоих Contains(999_999) в цикле на 10 тыс повторов. Разница — в тысячи раз. Объясни её через Big-O (O(n) против O(1)) и запиши себе правило: когда List, когда HashSet, когда Dictionary.', 60,
     [l('Big-O Cheat Sheet', 'https://www.bigocheatsheet.com/'),
      l('MS Docs: коллекции', 'https://learn.microsoft.com/dotnet/standard/collections/')]),
   t('algo-02', 'algo', 'practice', 'Реши Two Sum через словарь',
@@ -55,10 +61,27 @@ const algo: TaskSeed[] = [
     [l('Structorizer (редактор)', 'https://structorizer.fisch.lu/')]),
   t('algo-11', 'algo', 'practice', 'C#-метод → Pseudocode формата IHK',
     'Возьми метод из своего проекта и запиши его псевдокодом в стиле AP2 (WENN/SOLANGE/FÜR). Проверь по образцам решений IHK.', 45),
+  t('algo-12', 'algo', 'practice', 'Stack и Queue руками',
+    'Реализуй свой Stack<int> на массиве (Push/Pop/Peek, рост при переполнении). Потом реши задачу Valid Parentheses своим стеком. Сформулируй: где в реальном коде живут стек (вызовы, undo) и очередь (задачи, сообщения).', 60),
+  t('algo-13', 'algo', 'practice', 'Строки: StringBuilder против конкатенации',
+    'Замерь Stopwatch-ем: собери строку из 100 тыс кусочков через += и через StringBuilder. Объясни разницу через immutability строк. Потом реши задачу «переверни слова в предложении».', 45),
+  t('algo-14', 'algo', 'practice', 'Двумерные массивы: матрицы',
+    'Потренируй int[,] и int[][]: обход всех элементов, сумма по строкам/столбцам, транспонирование. Задачи на матрицы регулярно бывают в AP2.', 45),
+  t('algo-15', 'algo', 'practice', 'Связный список: пойми ссылки',
+    'Реализуй односвязный список сам: класс Node (Value, Next), методы Add и Print. Потом переверни его (reverse) — классика собеса. Нарисуй на бумаге, как двигаются ссылки.', 60),
+  t('algo-16', 'algo', 'practice', 'Множества в задачах',
+    'Реши через HashSet: пересечение двух массивов, «есть ли дубликаты», «первый пропущенный положительный». Сформулируй, когда HashSet вместо List — автоматический рефлекс.', 45),
+  t('algo-17', 'algo', 'practice', 'Жадные алгоритмы базово',
+    'Реши: «минимум монет для суммы» и «максимум непересекающихся интервалов». Пойми принцип: на каждом шаге локально лучший выбор. Когда жадность работает, а когда нет?', 60),
+  t('algo-18', 'algo', 'practice', 'Повторение: 5 задач заново по памяти',
+    'Вернись к 5 решённым задачам (two sum, анаграммы, sliding window, binary search, reverse list) и реши их заново с чистого листа, не подглядывая. Что забылось — то и есть твоя точка роста.', 60),
 ];
 
 // ── Track: csharp — C# для сильного разработчика ────────────────────────────
 const csharp: TaskSeed[] = [
+  t('cs-w1', 'csharp', 'practice', 'LINQ-разминка: Where / Select / OrderBy',
+    'LINQ — это готовые методы для коллекций вместо ручных циклов. Создай List<Person> (имя, возраст, город) на 10 записей и напиши 5 запросов по одной строке: фильтр по возрасту (Where), только имена (Select), сортировка (OrderBy), первый подходящий (First), количество по условию (Count). Сравни с тем, как это выглядело бы циклами.', 30,
+    [l('101 LINQ samples', 'https://learn.microsoft.com/samples/dotnet/try-samples/101-linq-samples/')]),
   t('cs-01', 'csharp', 'practice', 'Докажи deferred execution в LINQ',
     'Напиши пример, где LINQ-запрос выполняется не при объявлении, а при перечислении (докажи через side effect в Select). Объясни разницу IEnumerable vs IQueryable: где реально выполняется код.', 60,
     [l('MS Docs: deferred execution', 'https://learn.microsoft.com/dotnet/standard/linq/deferred-execution-lazy-evaluation')]),
@@ -86,10 +109,26 @@ const csharp: TaskSeed[] = [
   t('cs-08', 'csharp', 'practice', 'LINQ-ката: 5 задач',
     'Реши 5 задач только LINQ: GroupBy, SelectMany, Aggregate, ToDictionary, OrderBy+ThenBy. Без циклов. Потом объясни каждый запрос вслух.', 45,
     [l('101 LINQ samples', 'https://learn.microsoft.com/samples/dotnet/try-samples/101-linq-samples/')]),
+  t('cs-09', 'csharp', 'practice', 'Интерфейс vs абстрактный класс',
+    'Спроектируй мини-иерархию: IPayable + абстрактный Employee + два наследника. Сформулируй правило, когда интерфейс, а когда абстрактный класс — топ-3 вопрос немецких собесов.', 45),
+  t('cs-10', 'csharp', 'practice', 'List и Dictionary под капотом',
+    'Эксперимент: выведи Capacity у List при добавлении 1000 элементов — увидь удвоение. Объясни, почему вставка «в среднем O(1)». Про Dictionary: что такое хеш-коллизия и зачем GetHashCode.', 45),
+  t('cs-11', 'csharp', 'practice', 'Файлы и JSON',
+    'Напиши консольку: сериализуй список объектов в JSON-файл (System.Text.Json), прочитай обратно, обработай «файла нет» и «битый JSON». Это хлеб любого реального проекта.', 45,
+    [l('MS Docs: System.Text.Json', 'https://learn.microsoft.com/dotnet/standard/serialization/system-text-json/overview')]),
+  t('cs-12', 'csharp', 'practice', 'HttpClient: сходи в чужой API',
+    'Дёрни публичный API (например, open-meteo), десериализуй ответ в свои классы, обработай таймаут и не-200 ответ. Всё через async/await — как в настоящем бэкенде.', 60),
+  t('cs-13', 'csharp', 'practice', 'Extension methods и yield return',
+    'Напиши свой extension method для IEnumerable<int> (например, WhereEven) и свой итератор через yield return. Загляни, как LINQ устроен так же. Пойми ленивость yield.', 45),
+  t('cs-14', 'csharp', 'practice', 'Самопроверка C#: 20 вопросов вслух',
+    'Пройди свои карточки трека C# + придумай 5 новых вопросов. На каждый ответь вслух развёрнуто, как на собесе. Что промямлил — вернись в код и потрогай руками.', 45),
 ];
 
 // ── Track: backend — ASP.NET Core / EF Core ─────────────────────────────────
 const backend: TaskSeed[] = [
+  t('be-w1', 'backend', 'practice', 'Подними пустой Web API и разбери Program.cs',
+    'Выполни dotnet new webapi, запусти (dotnet run), открой Swagger в браузере и дёрни готовый эндпоинт. Потом пройди Program.cs строка за строкой и напиши комментарий к каждой своими словами: что такое builder, что кладут в Services, что такое app. Непонятные слова — сразу в карточки.', 45,
+    [l('MS Docs: первый Web API', 'https://learn.microsoft.com/aspnet/core/tutorials/first-web-api')]),
   t('be-01', 'backend', 'practice', 'DI lifetimes: докажи экспериментом',
     'Создай три сервиса (Singleton/Scoped/Transient), каждый с Guid в конструкторе. Внедри их в контроллер дважды за запрос и выведи Guid-ы. Объясни результат — это топ-вопрос собеса.', 60,
     [l('MS Docs: DI в ASP.NET Core', 'https://learn.microsoft.com/aspnet/core/fundamentals/dependency-injection')]),
@@ -118,10 +157,30 @@ const backend: TaskSeed[] = [
     'Пройди все контроллеры своего проекта. Для каждого эндпоинта объясни вслух без AI: маршрут, DTO, статус-коды, зачем каждый атрибут. Непонятное — выпиши и разберись.', 60),
   t('be-09', 'backend', 'project', 'Auslagenerstattung: сервисы и EF',
     'Пройди бизнес-логику и слой данных: объясни каждую строку, каждый LINQ-запрос, каждую конфигурацию EF. Непонятные места преврати в карточки.', 90),
+  t('be-10', 'backend', 'practice', 'Конфигурация и Options pattern',
+    'Вынеси настройки в appsettings.json, прочитай через IOptions<T>, переопредели переменной окружения. Секреты — в user secrets, не в git. Объясни порядок источников конфигурации.', 45,
+    [l('MS Docs: configuration', 'https://learn.microsoft.com/aspnet/core/fundamentals/configuration/')]),
+  t('be-11', 'backend', 'practice', 'Структурное логирование с Serilog',
+    'Подключи Serilog: логи в консоль и файл, уровни (Information/Warning/Error), структурные свойства ({UserId}). Залогируй один бизнес-сценарий так, чтобы по логам можно было расследовать баг.', 60,
+    [l('Serilog: getting started', 'https://github.com/serilog/serilog/wiki/Getting-Started')]),
+  t('be-12', 'backend', 'practice', 'Пагинация, фильтр, сортировка',
+    'Сделай списочный эндпоинт по-взрослому: ?page=2&pageSize=20&sortBy=date&filter=... через query-параметры. Верни метаданные (totalCount). Посмотри, какой SQL генерит Skip/Take.', 60),
+  t('be-13', 'backend', 'practice', 'Кэширование с IMemoryCache',
+    'Закэшируй тяжёлый запрос через IMemoryCache с истечением. Замерь время до и после. Обсуди сам с собой: когда кэш опасен (устаревшие данные) и что такое инвалидация.', 45),
+  t('be-14', 'backend', 'practice', 'BackgroundService: фоновая задача',
+    'Напиши HostedService, который раз в минуту что-то делает (чистит старые записи, шлёт «отчёт» в лог). Разберись с scope внутри singleton-сервиса — классические грабли.', 60,
+    [l('MS Docs: background services', 'https://learn.microsoft.com/aspnet/core/fundamentals/host/hosted-services')]),
+  t('be-15', 'backend', 'project', 'Разбери Telegram Mini App слой за слоем',
+    'Второй проект: пройди фронт и бэк, объясни каждую интеграцию с Telegram, каждый запрос. Что делал AI и ты не понимаешь — перепиши руками. Цель: рассказывать о проекте без запинки.', 90),
+  t('be-16', 'backend', 'project', 'Новая фича в Auslagenerstattung с нуля',
+    'Придумай и добавь фичу сам, без AI: эндпоинт + валидация + сервис + миграция + тест. Это финальный экзамен трека: с нуля через все слои своими руками.', 120),
 ];
 
 // ── Track: sql ───────────────────────────────────────────────────────────────
 const sql: TaskSeed[] = [
+  t('sql-w1', 'sql', 'practice', 'SQL-разминка на SQLBolt',
+    'Пройди первые 6 уроков SQLBolt прямо в браузере: SELECT, WHERE, ORDER BY, LIMIT и первый JOIN. Ничего устанавливать не нужно, запросы пишешь сам в интерактиве — идеальный разгон перед настоящими JOIN-ами.', 40,
+    [l('SQLBolt (интерактив)', 'https://sqlbolt.com/')]),
   t('sql-01', 'sql', 'practice', 'JOIN-тренировка',
     'На учебной схеме (клиенты-заказы-товары) напиши 5 запросов: INNER/LEFT JOIN, агрегаты с GROUP BY и фильтрация групп через HAVING. Объясни разницу WHERE и HAVING.', 60,
     [l('SQLBolt (интерактив)', 'https://sqlbolt.com/'),
@@ -138,6 +197,13 @@ const sql: TaskSeed[] = [
   t('sql-05', 'sql', 'practice', 'Какой SQL генерит EF Core',
     'Включи логирование SQL в своём проекте, посмотри, во что превращаются твои LINQ-запросы. Найди хотя бы одно место, где SQL неожиданный, и объясни почему.', 45,
     [l('MS Docs: simple logging', 'https://learn.microsoft.com/ef/core/logging-events-diagnostics/simple-logging')]),
+  t('sql-06', 'sql', 'practice', 'Транзакции и ACID на живом примере',
+    'Сценарий «перевод денег между счетами»: сделай без транзакции и слом посередине — увидь потерю денег. Оберни в BEGIN/COMMIT/ROLLBACK — почини. Расшифруй каждую букву ACID своими словами.', 60),
+  t('sql-07', 'sql', 'practice', 'CTE: читабельные сложные запросы',
+    'Возьми запрос с вложенным подзапросом и перепиши через WITH (CTE). Потом реши задачу «клиенты, потратившие больше среднего» двумя способами. Сравни читабельность.', 45),
+  t('sql-08', 'sql', 'practice', 'SQL-марафон: 20 задач',
+    'Прорешай 20 задач на sql-practice.com (уровень medium). Без подглядывания в решения — сначала свой запрос, потом сверка. Слабые места — в карточки.', 90,
+    [l('SQL Practice', 'https://www.sql-practice.com/')]),
 ];
 
 // ── Track: tests ─────────────────────────────────────────────────────────────
@@ -155,6 +221,10 @@ const tests: TaskSeed[] = [
   t('ts-04', 'tests', 'practice', 'TDD на одном сервисе',
     'Новый маленький сервис (например, калькуляция возмещения) строго по циклу red → green → refactor. Сначала тест, потом код. Отрефлексируй, что изменилось в дизайне.', 60,
     [l('Fowler: TDD', 'https://martinfowler.com/bliki/TestDrivenDevelopment.html')]),
+  t('ts-05', 'tests', 'exam', 'Testverfahren для AP2: Äquivalenzklassen',
+    'Экзаменационная тема! Прорешай задания: Blackbox vs Whitebox, Äquivalenzklassen (классы эквивалентности), Grenzwertanalyse (граничные значения). Составь тест-таблицу для функции валидации возраста.', 60),
+  t('ts-06', 'tests', 'practice', 'Coverage: найди непокрытое',
+    'Подключи coverage (dotnet test --collect:"XPlat Code Coverage" + отчёт), посмотри, что не покрыто в твоём проекте, докрой 2-3 критичных места. Пойми: 100% покрытие — не цель.', 60),
 ];
 
 // ── Track: devops — главный дифференциатор для найма ────────────────────────
@@ -180,6 +250,14 @@ const devops: TaskSeed[] = [
   t('dv-06', 'devops', 'theory', 'AZ-900 спринт (опционально)',
     'Пройди Microsoft Learn path по основам Azure, реши пробный тест. Сертификат — HR-фильтр: решай по времени/деньгам, знания нужны в любом случае.', 120,
     [l('AZ-900: Azure Fundamentals', 'https://learn.microsoft.com/credentials/certifications/azure-fundamentals/')]),
+  t('dv-07', 'devops', 'practice', 'Секреты и окружения по-взрослому',
+    'Проверь свои репо: нет ли ключей в истории git. Настрой: локально — user secrets, в CI — GitHub Secrets, в Azure — App Settings/Key Vault. Правило: строка подключения никогда не в коде.', 45,
+    [l('MS Docs: secrets', 'https://learn.microsoft.com/aspnet/core/security/app-secrets')]),
+  t('dv-08', 'devops', 'practice', 'Health checks и мониторинг',
+    'Добавь /health эндпоинт (AddHealthChecks + проверка БД). Подключи Application Insights в Azure, найди в портале свои запросы и ошибки. Умение «посмотреть, что с продом» очень ценят.', 60,
+    [l('MS Docs: health checks', 'https://learn.microsoft.com/aspnet/core/host-and-deploy/health-checks')]),
+  t('dv-09', 'devops', 'project', 'Задеплой второй проект',
+    'Telegram Mini App (или что готово) — в Azure тем же путём: Docker → CI/CD → живой URL. Второй деплой закрепит первый: теперь ты «умеешь деплоить», а не «один раз получилось».', 90),
 ];
 
 // ── Track: exam — AP2, дедлайн 25.11.2026 ───────────────────────────────────
@@ -217,6 +295,20 @@ const exam: TaskSeed[] = [
     'Разбери каждую ошибку из Prüfung №2: пойми, знание или невнимательность. По слабым темам — ещё по 2-3 задания.', 90),
   t('ex-12', 'exam', 'exam', 'Prüfung №3: генеральная репетиция',
     'Третья полная Prüfung в условиях экзамена (время, бумага, без телефона). После — финальный список тем на последнюю неделю.', 150),
+  t('ex-14', 'exam', 'exam', 'Netzplan и Gantt: проектное планирование',
+    'Прорешай задания на Netzplantechnik: FAZ/FEZ/SAZ/SEZ, Puffer, kritischer Pfad. Нарисуй Netzplan по таблице задач руками — типовое задание письменной части.', 90),
+  t('ex-15', 'exam', 'exam', 'Lastenheft, Pflichtenheft, Qualität',
+    'Прорешай блок: разница Lastenheft/Pflichtenheft, этапы проекта, критерии качества ПО (ISO), Qualitätssicherung. Определения — в карточки.', 60),
+  t('ex-16', 'exam', 'exam', 'OOP на бумаге: диаграмма → код',
+    'Задания AP2: по классовой диаграмме напиши код (наследование, полиморфизм) и наоборот — по коду нарисуй диаграмму. Без IDE, на бумаге, как на экзамене.', 60),
+  t('ex-17', 'exam', 'exam', 'WISO блок 3: договоры и право',
+    'Прорешай: Kaufvertrag (заключение, Mängel, Gewährleistung), AGB, Verbraucherschutz, Vollmachten. Факты — в карточки.', 90,
+    [l('Prozubi: WISO', 'https://www.prozubi.de/')]),
+  t('ex-18', 'exam', 'exam', 'WISO блок 4: экономика',
+    'Прорешай: Wirtschaftsordnung, Konjunkturzyklen, Inflation und EZB, Magisches Viereck. Это регулярные темы WISO — формулы и определения в карточки.', 90,
+    [l('Prozubi: WISO', 'https://www.prozubi.de/')]),
+  t('ex-19', 'exam', 'exam', 'Стратегия экзамена: время и порядок',
+    'Разбери формат своих двух пересдач (Algorithmen 90 мин, WISO 60 мин): сколько заданий, сколько минут на каждое, что решать первым. Напиши план «если застрял — пропускаю через N минут».', 45),
   t('ex-13', 'exam', 'exam', 'Финальный прогон WISO и формул',
     'Прогони все карточки WISO и алгоритмов подряд, прорешай один смешанный блок. Отметь, что осталось нетвёрдым, — повтори накануне.', 60),
 ];
@@ -244,6 +336,18 @@ const job: TaskSeed[] = [
     'Попроси AI провести техинтервью Junior .NET на 30 минут (вопросы + live-coding). Отвечай вслух. Разбери провалы, слабое — в карточки.', 60),
   t('job-09', 'job', 'practice', 'Добей до 20+ заявок',
     'Отправь ещё 15 заявок, обнови трекер. Проанализируй отклики: на какие формулировки в CV реагируют — скорректируй.', 120),
+  t('job-10', 'job', 'practice', 'Anschreiben-шаблон',
+    'Напиши базовое немецкое Anschreiben (3 абзаца: кто ты → почему эта фирма → что принесёшь) и научись адаптировать его под вакансию за 10 минут. Сохрани как шаблон.', 60),
+  t('job-11', 'job', 'practice', 'Нетворкинг: 5 контактов',
+    'Напиши 5 людям в LinkedIn/Xing: разработчикам из компаний Ruhrgebiet, рекрутерам. Короткое сообщение: учусь, вот проекты, открыт к Junior-позициям. Вступи в 2 .NET-сообщества.', 45),
+  t('job-12', 'job', 'practice', 'Изучи зарплатные вилки',
+    'Посмотри вилки Junior .NET в NRW (kununu, glassdoor, stepstone gehalt). Сформулируй свой ответ на вопрос о зарплате: диапазон + обоснование. Отрепетируй вслух.', 30),
+  t('job-13', 'job', 'practice', 'Заявки 21–35 + анализ воронки',
+    'Ещё 15 заявок. Потом посчитай воронку в трекере: заявки → ответы → интервью. Если ответов <10% — переработай CV/первую страницу GitHub, спроси у AI ревью с позиции рекрутера.', 120),
+  t('job-14', 'job', 'practice', 'Разбор реального интервью',
+    'После каждого настоящего собеседования: в тот же день выпиши ВСЕ вопросы, что ответил слабо — в карточки и в задачи. Одно реальное интервью стоит пяти mock-ов.', 45),
+  t('job-15', 'job', 'practice', 'Второе mock-интервью: замер прогресса',
+    'Через месяц после первого: снова 30-минутное техинтервью с AI, те же темы + новые. Сравни с первым — что стало увереннее, что всё ещё плавает.', 60),
 ];
 
 /**
@@ -253,17 +357,23 @@ const job: TaskSeed[] = [
  * к 25.11 экзамен автоматически становится приоритетом.
  */
 const WEAVE: Track[] = [
-  // старт: диагностика экзамена + разгон по всем трекам
-  'exam', 'algo', 'csharp', 'backend', 'algo', 'sql', 'csharp', 'exam',
-  'algo', 'backend', 'tests', 'job', 'csharp', 'algo', 'sql', 'devops',
-  'backend', 'exam', 'algo', 'csharp', 'tests', 'job', 'backend', 'sql',
-  'algo', 'devops', 'csharp', 'exam', 'backend', 'algo', 'tests', 'job',
-  'sql', 'csharp', 'devops', 'backend', 'algo', 'exam', 'job', 'csharp',
-  // середина: экзамен чаще, devops добивает деплой
-  'backend', 'algo', 'exam', 'devops', 'tests', 'job', 'sql', 'exam',
-  'algo', 'backend', 'devops', 'exam', 'job', 'algo', 'exam', 'devops',
-  // финал: плотная подготовка к AP2 + заявки
-  'exam', 'job', 'algo', 'exam', 'job', 'exam', 'job', 'exam', 'job', 'exam',
+  // разминка: мягкий вход по всем основным трекам
+  'algo', 'csharp', 'backend', 'sql', 'algo',
+  // фаза 1: разгон, диагностика экзамена, все треки по кругу
+  'exam', 'csharp', 'backend', 'algo', 'sql', 'tests', 'job', 'csharp',
+  'algo', 'backend', 'exam', 'devops', 'sql', 'csharp', 'algo', 'tests',
+  'backend', 'job', 'exam', 'algo', 'csharp', 'devops', 'sql', 'backend',
+  'algo', 'tests', 'job', 'exam', 'csharp', 'backend', 'algo', 'devops',
+  'sql', 'job', 'csharp', 'exam', 'backend', 'algo', 'tests', 'job',
+  // фаза 2: экзамен каждый 4-й слот, devops добивает деплой
+  'exam', 'algo', 'backend', 'csharp', 'exam', 'sql', 'devops', 'job',
+  'exam', 'algo', 'backend', 'tests', 'exam', 'csharp', 'devops', 'job',
+  'exam', 'algo', 'sql', 'backend', 'exam', 'csharp', 'job', 'devops',
+  'exam', 'algo', 'backend', 'job', 'exam', 'csharp', 'sql', 'algo',
+  // фаза 3: плотная подготовка к AP2 + заявки и интервью
+  'exam', 'job', 'algo', 'exam', 'backend', 'job', 'exam', 'algo',
+  'exam', 'job', 'csharp', 'exam', 'algo', 'job', 'exam', 'backend',
+  'exam', 'job', 'algo', 'exam', 'job', 'exam', 'algo', 'job',
 ];
 
 function interleave(byTrack: Record<Track, TaskSeed[]>): TaskSeed[] {
@@ -276,8 +386,15 @@ function interleave(byTrack: Record<Track, TaskSeed[]>): TaskSeed[] {
     const next = queues[track].shift();
     if (next) result.push(next);
   }
-  // если в каком-то треке задач больше, чем слотов в WEAVE — дочерпываем в конец
-  for (const rest of Object.values(queues)) result.push(...rest);
+  // остатки дочерпываем по кругу, чтобы интерливинг сохранялся до конца
+  let remaining = Object.values(queues).filter((q) => q.length > 0);
+  while (remaining.length > 0) {
+    for (const q of remaining) {
+      const next = q.shift();
+      if (next) result.push(next);
+    }
+    remaining = remaining.filter((q) => q.length > 0);
+  }
   return result;
 }
 
@@ -303,20 +420,38 @@ const c = (id: string, title: string, difficulty: 'easy' | 'medium', slug: strin
 });
 
 export const CURRICULUM_CHALLENGES: ChallengeSeed[] = [
+  c('ch-29', 'Fizz Buzz', 'easy', 'fizz-buzz'),
+  c('ch-30', 'Reverse String', 'easy', 'reverse-string'),
   c('ch-01', 'Two Sum', 'easy', 'two-sum'),
+  c('ch-31', 'Palindrome Number', 'easy', 'palindrome-number'),
   c('ch-02', 'Contains Duplicate', 'easy', 'contains-duplicate'),
+  c('ch-32', 'Roman to Integer', 'easy', 'roman-to-integer'),
   c('ch-03', 'Valid Anagram', 'easy', 'valid-anagram'),
+  c('ch-33', 'Length of Last Word', 'easy', 'length-of-last-word'),
   c('ch-04', 'Valid Parentheses', 'easy', 'valid-parentheses'),
+  c('ch-34', 'Remove Duplicates from Sorted Array', 'easy', 'remove-duplicates-from-sorted-array'),
   c('ch-05', 'Best Time to Buy and Sell Stock', 'easy', 'best-time-to-buy-and-sell-stock'),
+  c('ch-35', 'Plus One', 'easy', 'plus-one'),
   c('ch-06', 'Binary Search', 'easy', 'binary-search'),
+  c('ch-36', 'Search Insert Position', 'easy', 'search-insert-position'),
   c('ch-07', 'First Unique Character in a String', 'easy', 'first-unique-character-in-a-string'),
+  c('ch-37', 'Single Number', 'easy', 'single-number'),
   c('ch-08', 'Valid Palindrome', 'easy', 'valid-palindrome'),
+  c('ch-38', 'Missing Number', 'easy', 'missing-number'),
   c('ch-09', 'Move Zeroes', 'easy', 'move-zeroes'),
+  c('ch-39', 'Intersection of Two Arrays II', 'easy', 'intersection-of-two-arrays-ii'),
   c('ch-10', 'Majority Element', 'easy', 'majority-element'),
+  c('ch-40', 'Merge Sorted Array', 'easy', 'merge-sorted-array'),
   c('ch-11', 'Squares of a Sorted Array', 'easy', 'squares-of-a-sorted-array'),
+  c('ch-41', 'Isomorphic Strings', 'easy', 'isomorphic-strings'),
   c('ch-12', 'Merge Two Sorted Lists', 'easy', 'merge-two-sorted-lists'),
+  c('ch-42', 'Happy Number', 'easy', 'happy-number'),
   c('ch-13', 'Reverse Linked List', 'easy', 'reverse-linked-list'),
+  c('ch-43', 'Linked List Cycle', 'easy', 'linked-list-cycle'),
   c('ch-14', 'Ransom Note', 'easy', 'ransom-note'),
+  c('ch-44', 'Word Pattern', 'easy', 'word-pattern'),
+  c('ch-45', 'Climbing Stairs', 'easy', 'climbing-stairs'),
+  c('ch-46', 'Pascal’s Triangle', 'easy', 'pascals-triangle'),
   c('ch-15', 'Two Sum II — Input Array Is Sorted', 'medium', 'two-sum-ii-input-array-is-sorted'),
   c('ch-16', 'Group Anagrams', 'medium', 'group-anagrams'),
   c('ch-17', 'Longest Substring Without Repeating Characters', 'medium', 'longest-substring-without-repeating-characters'),
@@ -330,7 +465,23 @@ export const CURRICULUM_CHALLENGES: ChallengeSeed[] = [
   c('ch-25', 'Subarray Sum Equals K', 'medium', 'subarray-sum-equals-k'),
   c('ch-26', 'Merge Intervals', 'medium', 'merge-intervals'),
   c('ch-27', 'Min Stack', 'medium', 'min-stack'),
+  c('ch-47', 'Daily Temperatures', 'medium', 'daily-temperatures'),
+  c('ch-48', 'Longest Consecutive Sequence', 'medium', 'longest-consecutive-sequence'),
+  c('ch-49', 'Kth Largest Element in an Array', 'medium', 'kth-largest-element-in-an-array'),
+  c('ch-50', 'House Robber', 'medium', 'house-robber'),
   c('ch-28', 'Spiral Matrix', 'medium', 'spiral-matrix'),
+  c('ch-51', 'Rotate Image', 'medium', 'rotate-image'),
+  c('ch-52', 'Set Matrix Zeroes', 'medium', 'set-matrix-zeroes'),
+  c('ch-53', 'Insert Interval', 'medium', 'insert-interval'),
+  c('ch-54', 'Find First and Last Position of Element', 'medium', 'find-first-and-last-position-of-element-in-sorted-array'),
+  c('ch-55', 'Search a 2D Matrix', 'medium', 'search-a-2d-matrix'),
+  c('ch-56', 'Jump Game', 'medium', 'jump-game'),
+  c('ch-57', 'Unique Paths', 'medium', 'unique-paths'),
+  c('ch-58', 'Coin Change', 'medium', 'coin-change'),
+  c('ch-59', 'Longest Palindromic Substring', 'medium', 'longest-palindromic-substring'),
+  c('ch-60', 'Generate Parentheses', 'medium', 'generate-parentheses'),
+  c('ch-61', 'Permutations', 'medium', 'permutations'),
+  c('ch-62', 'Subsets', 'medium', 'subsets'),
 ];
 
 // ── Стартовые карточки (Leitner). Пользователь дополняет своими. ────────────
@@ -379,6 +530,28 @@ export const CURRICULUM_FLASHCARDS: CardSeed[] = [
     'Tarifvertrag: профсоюз ↔ работодатель/союз работодателей, отраслевой уровень (зарплаты, отпуск). Betriebsvereinbarung: Betriebsrat ↔ работодатель, уровень предприятия.'),
   f('fc-20', 'exam', 'WISO: срок Kündigungsfrist в Probezeit (обычный трудовой договор)?',
     '2 недели, в любой день (§622 Abs. 3 BGB). После Probezeit — минимум 4 недели к 15-му числу или к концу месяца.'),
+  f('fc-21', 'tests', 'Äquivalenzklassen и Grenzwertanalyse?',
+    'Входные данные делят на классы эквивалентности и тестируют по одному представителю из каждого + проверяют граничные значения (min, max, ±1 от границы).'),
+  f('fc-22', 'tests', 'Blackbox vs Whitebox Test?',
+    'Blackbox — тест по спецификации, без знания кода (что делает). Whitebox — со знанием внутренней структуры, покрытие ветвей и путей (как делает).'),
+  f('fc-23', 'exam', 'Lastenheft vs Pflichtenheft?',
+    'Lastenheft — ЧТО хочет заказчик (требования, пишет заказчик). Pflichtenheft — КАК это будет реализовано (пишет исполнитель на основе Lastenheft).'),
+  f('fc-24', 'exam', 'Kritischer Pfad в Netzplan?',
+    'Самая длинная цепочка операций, у которых Puffer = 0. Задержка любой из них сдвигает срок всего проекта.'),
+  f('fc-25', 'exam', 'WISO: что такое Inflation и кто с ней борется в еврозоне?',
+    'Устойчивый рост уровня цен = падение покупательной способности. EZB через Leitzins (ключевую ставку); цель — около 2% в год.'),
+  f('fc-26', 'exam', 'WISO: AGB — что это и когда действуют?',
+    'Allgemeine Geschäftsbedingungen — типовые условия договора. Действуют, если явно включены в договор при заключении и не противоречат закону (§305 ff. BGB).'),
+  f('fc-27', 'csharp', 'yield return — что делает?',
+    'Превращает метод в ленивый итератор: элементы отдаются по одному при перечислении, состояние метода сохраняется между вызовами. Ничего не выполняется, пока не начали перечислять.'),
+  f('fc-28', 'csharp', 'Что такое extension method?',
+    'Статический метод в статическом классе с this-параметром первого аргумента; вызывается как метод расширяемого типа. Весь LINQ — extension methods для IEnumerable.'),
+  f('fc-29', 'sql', 'Что такое транзакция и ACID?',
+    'Группа операций, выполняемая как одно целое. Atomicity — всё или ничего; Consistency — данные валидны до и после; Isolation — параллельные транзакции не мешают; Durability — закоммиченное не теряется.'),
+  f('fc-30', 'algo', 'Вставка в начало: List vs LinkedList?',
+    'List<T>: O(n) — сдвигает все элементы. LinkedList<T>: O(1) — переставляет ссылки. Но List обычно быстрее на практике из-за кэш-локальности массива.'),
+  f('fc-31', 'csharp', 'Интерфейс vs абстрактный класс — когда что?',
+    'Интерфейс — контракт «умеет X», можно реализовать много. Абстрактный класс — общая база с состоянием и частичной реализацией, наследуется один. Нет общего кода → интерфейс.'),
 ];
 
 // ── Майлстоуны готовности к работе ──────────────────────────────────────────

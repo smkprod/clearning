@@ -7,6 +7,7 @@ import { FlashcardsScreen } from './screens/FlashcardsScreen';
 import { ActivityScreen } from './screens/ActivityScreen';
 import { JobScreen } from './screens/JobScreen';
 import { SettingsScreen } from './screens/SettingsScreen';
+import { WorkTimer } from './components/WorkTimer';
 import { isDue } from './utils/leitner';
 import { todayStr } from './utils/date';
 
@@ -29,11 +30,14 @@ function Shell() {
   return (
     <div className={styles.shell}>
       <header className={styles.header}>
-        <div className={styles.logo}>
-          c<span className={styles.logoAccent}>learning</span>
-          <span className="dim" style={{ fontWeight: 400, fontSize: 12, marginLeft: 8 }}>
-            AP2 → Junior .NET
-          </span>
+        <div className={styles.logoRow}>
+          <div className={styles.logo}>
+            c<span className={styles.logoAccent}>learning</span>
+            <span className="dim" style={{ fontWeight: 400, fontSize: 12, marginLeft: 8 }}>
+              AP2 → Junior .NET
+            </span>
+          </div>
+          <WorkTimer />
         </div>
         <nav className={styles.nav} aria-label="Основная навигация">
           {SCREENS.map((s) => (

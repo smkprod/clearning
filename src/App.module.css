@@ -13,6 +13,13 @@
   flex-wrap: wrap;
 }
 
+.logoRow {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
 .logo {
   font-family: var(--font-mono);
   font-size: 18px;

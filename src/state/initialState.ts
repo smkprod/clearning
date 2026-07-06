@@ -23,6 +23,7 @@ export function createInitialState(): AppState {
     milestones: CURRICULUM_MILESTONES.map((m) => ({ ...m, done: false })),
     applications: [],
     logs: {},
+    timerStartedAt: null,
   };
 }
 
@@ -39,21 +40,37 @@ export function hydrateState(raw: unknown): AppState {
   }
   const stored = raw as AppState;
 
-  // контент берём из сида, прогресс (progressKeys) — из сохранённого
+  // Контент берём из сида, прогресс (progressKeys) — из сохранённого.
+  // Новые элементы сида вставляются после своего ближайшего «соседа сверху»
+  // из сида, а не в конец — так разминка попадает в начало очереди, не ломая
+  // пользовательский порядок уже существующих задач.
   const mergeById = <T extends { id: string }>(
     existing: T[],
     seeded: T[],
     progressKeys: (keyof T)[],
   ): T[] => {
     const seedById = new Map(seeded.map((s) => [s.id, s]));
-    const refreshed = existing.map((item) => {
+    const merged = existing.map((item) => {
       const seed = seedById.get(item.id);
       if (!seed) return item; // пользовательский элемент — не трогаем
       const progress = Object.fromEntries(progressKeys.map((k) => [k, item[k]]));
       return { ...seed, ...progress };
     });
     const known = new Set(existing.map((x) => x.id));
-    return [...refreshed, ...seeded.filter((s) => !known.has(s.id))];
+    seeded.forEach((seed, seedIdx) => {
+      if (known.has(seed.id)) return;
+      let insertAt = 0;
+      for (let j = seedIdx - 1; j >= 0; j--) {
+        const idx = merged.findIndex((m) => m.id === seeded[j].id);
+        if (idx !== -1) {
+          insertAt = idx + 1;
+          break;
+        }
+      }
+      merged.splice(insertAt, 0, { ...seed });
+      known.add(seed.id);
+    });
+    return merged;
   };
 
   return {

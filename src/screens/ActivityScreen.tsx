@@ -1,9 +1,7 @@
 import { useMemo, useState } from 'react';
 import styles from './ActivityScreen.module.css';
 import { useAppState } from '../state/AppStateContext';
-import { addDays, formatDate, formatMinutes, parseDateStr, todayStr } from '../utils/date';
-
-const WEEKS = 26;
+import { addDays, diffDays, formatDate, formatMinutes, parseDateStr, todayStr } from '../utils/date';
 
 function level(minutes: number): string {
   if (minutes <= 0) return '';
@@ -15,21 +13,27 @@ function level(minutes: number): string {
 
 const MONTHS = ['янв', 'фев', 'мар', 'апр', 'май', 'июн', 'июл', 'авг', 'сен', 'окт', 'ноя', 'дек'];
 
+const mondayOf = (dateStr: string) => {
+  const dow = (parseDateStr(dateStr).getDay() + 6) % 7; // 0 = понедельник
+  return addDays(dateStr, -dow);
+};
+
 export function ActivityScreen() {
   const { state } = useAppState();
   const today = todayStr();
   const [selected, setSelected] = useState<string | null>(null);
 
-  // сетка: колонки — недели (пн-вс), последняя колонка — текущая неделя
+  // сетка: от старта программы до горизонта — экзамен или полгода вперёд,
+  // что позже. Будущие дни видны: это оставшаяся дистанция, а не прошлое.
   const weeks = useMemo(() => {
-    const t = parseDateStr(today);
-    const dow = (t.getDay() + 6) % 7; // 0 = понедельник
-    const monday = addDays(today, -dow);
-    const start = addDays(monday, -(WEEKS - 1) * 7);
-    return Array.from({ length: WEEKS }, (_, w) =>
+    const start = mondayOf(state.createdAt <= today ? state.createdAt : today);
+    const horizon = [state.examDate, addDays(state.createdAt, 180), today]
+      .reduce((a, b) => (a >= b ? a : b));
+    const weekCount = Math.floor(diffDays(start, mondayOf(horizon)) / 7) + 1;
+    return Array.from({ length: weekCount }, (_, w) =>
       Array.from({ length: 7 }, (_, d) => addDays(start, w * 7 + d)),
     );
-  }, [today]);
+  }, [state.createdAt, state.examDate, today]);
 
   const monthLabels = weeks.map((week, i) => {
     const first = parseDateStr(week[0]);
@@ -52,7 +56,9 @@ export function ActivityScreen() {
   return (
     <div>
       <section className="card">
-        <div className="card-title">Активность за {WEEKS} недель</div>
+        <div className="card-title">
+          Дистанция: {formatDate(state.createdAt)} → экзамен {formatDate(state.examDate)} и дальше
+        </div>
         <div className={styles.heatmapWrap}>
           <div className={styles.monthLabels}>
             {monthLabels.map((m, i) => (
@@ -67,6 +73,12 @@ export function ActivityScreen() {
                 {week.map((date) => {
                   const minutes = state.logs[date]?.minutes ?? 0;
                   const future = date > today;
+                  const isExam = date === state.examDate;
+                  const label = isExam
+                    ? `${formatDate(date)} — ЭКЗАМЕН AP2`
+                    : future
+                      ? formatDate(date)
+                      : `${formatDate(date)}: ${formatMinutes(minutes)}`;
                   return (
                     <button
                       key={date}
@@ -76,9 +88,11 @@ export function ActivityScreen() {
                         level(minutes),
                         selected === date ? styles.cellSelected : '',
                         future ? styles.cellFuture : '',
+                        date === today ? styles.cellToday : '',
+                        isExam ? styles.cellExam : '',
                       ].join(' ')}
-                      title={`${formatDate(date)}: ${formatMinutes(minutes)}`}
-                      aria-label={`${formatDate(date)}: ${formatMinutes(minutes)}`}
+                      title={label}
+                      aria-label={label}
                       disabled={future}
                       onClick={() => setSelected(date === selected ? null : date)}
                     />
@@ -96,6 +110,10 @@ export function ActivityScreen() {
           <span className={`${styles.legendCell} ${styles.l3}`} />
           <span className={`${styles.legendCell} ${styles.l4}`} />
           больше
+          <span style={{ marginLeft: 16 }}>сегодня</span>
+          <span className={`${styles.legendCell} ${styles.cellToday}`} />
+          <span style={{ marginLeft: 16 }}>экзамен</span>
+          <span className={`${styles.legendCell} ${styles.cellExam}`} />
         </div>
       </section>
 

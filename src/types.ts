@@ -76,6 +76,8 @@ export interface AppState {
   milestones: Milestone[];
   applications: Application[];
   logs: Record<string, DayLog>; // 'YYYY-MM-DD' -> DayLog
+  /** ISO-время запуска таймера работы; null — таймер выключен */
+  timerStartedAt?: string | null;
 }
 
 export type CardRating = 'again' | 'hard' | 'good' | 'easy';

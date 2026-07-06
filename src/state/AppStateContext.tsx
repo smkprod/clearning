@@ -17,6 +17,9 @@ const STORAGE_KEY = 'clearning:state:v1';
 
 export interface AppActions {
   logMinutes(minutes: number): void;
+  startTimer(): void;
+  /** останавливает таймер и записывает прошедшие минуты в сегодняшний лог */
+  stopTimer(): void;
   completeTask(taskId: string, minutes: number): void;
   reopenTask(taskId: string): void;
   deferTask(taskId: string): void;
@@ -71,6 +74,19 @@ export function AppStateProvider({ children }: { children: ReactNode }) {
     () => ({
       logMinutes(minutes) {
         update((s) => withLoggedWork(s, minutes));
+      },
+
+      startTimer() {
+        update((s) => ({ ...s, timerStartedAt: new Date().toISOString() }));
+      },
+
+      stopTimer() {
+        update((s) => {
+          if (!s.timerStartedAt) return s;
+          const minutes = Math.round((Date.now() - Date.parse(s.timerStartedAt)) / 60_000);
+          const next = minutes > 0 ? withLoggedWork(s, minutes) : s;
+          return { ...next, timerStartedAt: null };
+        });
       },
 
       completeTask(taskId, minutes) {

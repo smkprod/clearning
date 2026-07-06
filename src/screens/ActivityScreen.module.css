@@ -34,7 +34,20 @@
 }
 
 .cellFuture {
-  visibility: hidden;
+  background: transparent;
+  border: 1px dashed var(--border-strong);
+  cursor: default;
+}
+
+.cellToday {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+}
+
+.cellExam {
+  background: var(--track-exam) !important;
+  border: 1px solid var(--track-exam);
+  visibility: visible;
 }
 
 .l1 { background: #143a5c; }

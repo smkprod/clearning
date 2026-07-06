@@ -237,6 +237,9 @@ export function Dashboard({ onNavigateCards }: Props) {
           <button type="button" className="btn btn-sm" onClick={addManual} disabled={!Number(manualMin)}>
             +
           </button>
+          <span className="dim" style={{ fontSize: 12 }}>
+            …или включи ▶ Таймер в шапке — минуты запишутся сами
+          </span>
         </div>
       </section>
 
