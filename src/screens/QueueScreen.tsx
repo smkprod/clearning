@@ -2,6 +2,7 @@ import { useMemo, useState } from 'react';
 import styles from './QueueScreen.module.css';
 import { useAppState } from '../state/AppStateContext';
 import { MinutesModal } from '../components/MinutesModal';
+import { TaskLinks } from '../components/TaskLinks';
 import { ProgressBar } from '../components/ProgressBar';
 import { TRACK_COLORS } from '../components/TrackBadge';
 import type { Task, Track } from '../types';
@@ -47,6 +48,7 @@ export function QueueScreen() {
           {task.title}
         </div>
         <div className={styles.rowDetail}>{task.detail}</div>
+        {!task.done && <TaskLinks links={task.links} />}
         <div className={styles.rowMeta}>
           <span style={{ color: TRACK_COLORS[task.track] }}>{TRACK_LABELS[task.track]}</span>
           {' · '}~{task.estMin} мин

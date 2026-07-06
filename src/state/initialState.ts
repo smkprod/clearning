@@ -27,9 +27,10 @@ export function createInitialState(): AppState {
 }
 
 /**
- * Приводит сохранённое состояние к актуальному виду: если программа в
- * curriculum.ts пополнилась новыми задачами/карточками/челленджами, они
- * дописываются в конец, не трогая прогресс пользователя.
+ * Приводит сохранённое состояние к актуальному виду: новые задачи/карточки/
+ * челленджи из curriculum.ts дописываются в конец, а у уже сохранённых
+ * обновляется контент (заголовки, описания, ссылки) — прогресс пользователя
+ * (done, боксы, даты, порядок очереди) при этом не трогается.
  */
 export function hydrateState(raw: unknown): AppState {
   const fresh = createInitialState();
@@ -38,18 +39,30 @@ export function hydrateState(raw: unknown): AppState {
   }
   const stored = raw as AppState;
 
-  const mergeById = <T extends { id: string }>(existing: T[], seeded: T[]): T[] => {
+  // контент берём из сида, прогресс (progressKeys) — из сохранённого
+  const mergeById = <T extends { id: string }>(
+    existing: T[],
+    seeded: T[],
+    progressKeys: (keyof T)[],
+  ): T[] => {
+    const seedById = new Map(seeded.map((s) => [s.id, s]));
+    const refreshed = existing.map((item) => {
+      const seed = seedById.get(item.id);
+      if (!seed) return item; // пользовательский элемент — не трогаем
+      const progress = Object.fromEntries(progressKeys.map((k) => [k, item[k]]));
+      return { ...seed, ...progress };
+    });
     const known = new Set(existing.map((x) => x.id));
-    return [...existing, ...seeded.filter((s) => !known.has(s.id))];
+    return [...refreshed, ...seeded.filter((s) => !known.has(s.id))];
   };
 
   return {
     ...fresh,
     ...stored,
-    tasks: mergeById<Task>(stored.tasks ?? [], fresh.tasks),
-    flashcards: mergeById<Flashcard>(stored.flashcards ?? [], fresh.flashcards),
-    challenges: mergeById(stored.challenges ?? [], fresh.challenges),
-    milestones: mergeById(stored.milestones ?? [], fresh.milestones),
+    tasks: mergeById<Task>(stored.tasks ?? [], fresh.tasks, ['done', 'doneDate']),
+    flashcards: mergeById<Flashcard>(stored.flashcards ?? [], fresh.flashcards, ['box', 'nextReview']),
+    challenges: mergeById(stored.challenges ?? [], fresh.challenges, ['solved']),
+    milestones: mergeById(stored.milestones ?? [], fresh.milestones, ['done']),
     applications: stored.applications ?? [],
     logs: stored.logs ?? {},
   };

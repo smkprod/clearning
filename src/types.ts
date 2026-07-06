@@ -10,12 +10,18 @@ export type Track =
 
 export type TaskType = 'practice' | 'theory' | 'project' | 'exam' | 'milestone';
 
+export interface TaskLink {
+  label: string;
+  url: string;
+}
+
 export interface Task {
   id: string;
   track: Track;
   type: TaskType;
   title: string;
   detail: string; // что конкретно сделать
+  links?: TaskLink[]; // теория/справка к задаче
   estMin: number;
   done: boolean;
   doneDate: string | null;
