@@ -1,0 +1,104 @@
+.readinessHeader {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 14px;
+}
+
+.percent {
+  font-family: var(--font-mono);
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--track-job);
+}
+
+.milestone {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  margin-bottom: 6px;
+  cursor: pointer;
+  background: var(--surface);
+}
+
+.milestone:hover {
+  background: var(--surface-2);
+}
+
+.milestoneDone {
+  opacity: 0.6;
+}
+
+.milestoneDone .milestoneLabel {
+  text-decoration: line-through;
+}
+
+.milestoneLabel {
+  font-size: 14px;
+}
+
+.appForm {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+}
+
+.appForm input {
+  flex: 1;
+  min-width: 160px;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13.5px;
+}
+
+.table th {
+  text-align: left;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-faint);
+  padding: 8px 10px;
+  border-bottom: 1px solid var(--border-strong);
+  font-weight: 600;
+}
+
+.table td {
+  padding: 8px 10px;
+  border-bottom: 1px solid var(--border);
+}
+
+.statusSelect {
+  background: var(--bg);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-sm);
+  color: var(--text);
+  padding: 4px 8px;
+  font-size: 12.5px;
+}
+
+.statusApplied { color: var(--accent); }
+.statusInterview { color: var(--warn); }
+.statusOffer { color: var(--ok); }
+.statusRejected { color: var(--text-faint); }
+
+.tableWrap {
+  overflow-x: auto;
+}
+
+.counts {
+  display: flex;
+  gap: 14px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--text-dim);
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+}
