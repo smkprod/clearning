@@ -22,6 +22,8 @@ import type {
 
 type TaskSeed = Omit<Task, 'done' | 'doneDate'>;
 
+type TaskExtra = Pick<Task, 'starter' | 'doneWhen' | 'sandbox'>;
+
 const t = (
   id: string,
   track: Track,
@@ -30,22 +32,91 @@ const t = (
   detail: string,
   estMin: number,
   links?: TaskLink[],
-): TaskSeed => ({ id, track, type, title, detail, estMin, links });
+  extra?: TaskExtra,
+): TaskSeed => ({ id, track, type, title, detail, estMin, links, ...extra });
 
 const l = (label: string, url: string): TaskLink => ({ label, url });
 
 // ── Track: algo — алгоритмы и решение задач ─────────────────────────────────
 const algo: TaskSeed[] = [
   t('algo-w1', 'algo', 'practice', 'Секундомер Stopwatch: твой первый замер',
-    'Stopwatch — это просто секундомер из System.Diagnostics, им меряют скорость кода. Напиши консольку: var sw = Stopwatch.StartNew(); → цикл суммирует числа от 1 до 100 млн → sw.Stop() → выведи sw.ElapsedMilliseconds. Поменяй 100 млн на 1 млрд и посмотри, во сколько раз выросло время.', 30,
-    [l('MS Docs: Stopwatch', 'https://learn.microsoft.com/dotnet/api/system.diagnostics.stopwatch')]),
+    'Stopwatch — это просто секундомер из System.Diagnostics, им меряют скорость кода. Открой песочницу, вставь каркас и допиши цикл. Запусти, увидь время в мс. Потом поменяй 100 млн на 1 млрд и запусти снова — время вырастет примерно в 10 раз.', 30,
+    [l('MS Docs: Stopwatch', 'https://learn.microsoft.com/dotnet/api/system.diagnostics.stopwatch')],
+    {
+      sandbox: 'dotnetfiddle',
+      doneWhen: 'В консоли появилось время в мс, и после замены 100 млн → 1 млрд оно выросло примерно в 10 раз.',
+      starter: `using System;
+using System.Diagnostics;
+
+var sw = Stopwatch.StartNew();
+
+long sum = 0;
+// ТВОЯ СТРОЧКА: цикл от 1 до 100_000_000, каждый раз прибавляй i к sum
+
+
+sw.Stop();
+Console.WriteLine($"sum = {sum}, заняло {sw.ElapsedMilliseconds} мс");`,
+    }),
   t('algo-w2', 'algo', 'practice', 'Big-O на пальцах: три цикла',
-    'Big-O отвечает на вопрос: «данных стало в 10 раз больше — во сколько раз замедлится код?». Напиши три метода: взять первый элемент массива (O(1) — всегда одинаково), найти число перебором (O(n) — растёт линейно), сравнить каждый элемент с каждым двумя вложенными циклами (O(n²)). Замерь каждый Stopwatch-ем на массивах 1 тыс / 10 тыс / 100 тыс и посмотри на рост времени — вот и вся магия Big-O.', 45,
-    [l('Big-O Cheat Sheet', 'https://www.bigocheatsheet.com/')]),
+    'Big-O отвечает на вопрос: «данных стало в 10 раз больше — во сколько раз замедлится код?». В каркасе три метода: O(1) готов, тебе дописать O(n) (перебор) и O(n²) (два вложенных цикла). Запусти на 1 тыс / 10 тыс / 100 тыс и посмотри на рост времени — вот и вся магия Big-O.', 45,
+    [l('Big-O Cheat Sheet', 'https://www.bigocheatsheet.com/')],
+    {
+      sandbox: 'dotnetfiddle',
+      doneWhen: 'Видишь: O(1) не меняется, O(n) растёт линейно, O(n²) при ×10 данных замедляется примерно в 100 раз.',
+      starter: `using System;
+using System.Diagnostics;
+using System.Linq;
+
+int[] data = Enumerable.Range(0, 100_000).ToArray(); // поменяй размер: 1000, 10000, 100000
+
+// O(1): всегда одинаково быстро
+int First(int[] a) => a[0];
+
+// O(n): дописать — перебором найди, есть ли число target
+bool Contains(int[] a, int target)
+{
+    // ТВОЙ КОД: один цикл по a, верни true если нашёл
+    return false;
+}
+
+// O(n^2): дописать — есть ли в массиве два одинаковых числа (два вложенных цикла)
+bool HasDuplicate(int[] a)
+{
+    // ТВОЙ КОД: цикл в цикле
+    return false;
+}
+
+var sw = Stopwatch.StartNew();
+HasDuplicate(data);
+sw.Stop();
+Console.WriteLine($"n = {data.Length}, O(n^2) занял {sw.ElapsedMilliseconds} мс");`,
+    }),
   t('algo-01', 'algo', 'practice', 'List vs HashSet: почувствуй разницу',
-    'Ты уже умеешь Stopwatch и понял Big-O. Теперь заполни List<int> и HashSet<int> миллионом чисел и замерь у обоих Contains(999_999) в цикле на 10 тыс повторов. Разница — в тысячи раз. Объясни её через Big-O (O(n) против O(1)) и запиши себе правило: когда List, когда HashSet, когда Dictionary.', 60,
+    'Ты уже умеешь Stopwatch и понял Big-O. Теперь заполни List<int> и HashSet<int> миллионом чисел и замерь у обоих Contains в цикле на 10 тыс повторов. Разница — в тысячи раз. Объясни её через Big-O (O(n) против O(1)) и запиши себе правило: когда List, когда HashSet, когда Dictionary.', 60,
     [l('Big-O Cheat Sheet', 'https://www.bigocheatsheet.com/'),
-     l('MS Docs: коллекции', 'https://learn.microsoft.com/dotnet/standard/collections/')]),
+     l('MS Docs: коллекции', 'https://learn.microsoft.com/dotnet/standard/collections/')],
+    {
+      sandbox: 'dotnetfiddle',
+      doneWhen: 'Замер показал: у HashSet поиск в тысячи раз быстрее, чем у List. Ты можешь объяснить почему (O(1) против O(n)).',
+      starter: `using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
+
+var list = Enumerable.Range(0, 1_000_000).ToList();
+var set = new HashSet<int>(list);
+
+var sw = Stopwatch.StartNew();
+for (int i = 0; i < 10_000; i++) list.Contains(999_999);   // O(n)
+sw.Stop();
+Console.WriteLine($"List:    {sw.ElapsedMilliseconds} мс");
+
+sw.Restart();
+// ТВОЙ КОД: тот же цикл на 10_000 повторов, но set.Contains(999_999)  // O(1)
+
+sw.Stop();
+Console.WriteLine($"HashSet: {sw.ElapsedMilliseconds} мс");`,
+    }),
   t('algo-02', 'algo', 'practice', 'Реши Two Sum через словарь',
     'Сначала реши brute-force за O(n²), потом за O(n) с Dictionary. Сформулируй вслух, почему хеш-таблица убирает вложенный цикл.', 45,
     [l('NeetCode Roadmap', 'https://neetcode.io/roadmap')]),
@@ -90,8 +161,36 @@ const algo: TaskSeed[] = [
 // ── Track: csharp — C# для сильного разработчика ────────────────────────────
 const csharp: TaskSeed[] = [
   t('cs-w1', 'csharp', 'practice', 'LINQ-разминка: Where / Select / OrderBy',
-    'LINQ — это готовые методы для коллекций вместо ручных циклов. Создай List<Person> (имя, возраст, город) на 10 записей и напиши 5 запросов по одной строке: фильтр по возрасту (Where), только имена (Select), сортировка (OrderBy), первый подходящий (First), количество по условию (Count). Сравни с тем, как это выглядело бы циклами.', 30,
-    [l('101 LINQ samples', 'https://learn.microsoft.com/samples/dotnet/try-samples/101-linq-samples/')]),
+    'LINQ — это готовые методы для коллекций вместо ручных циклов. В каркасе список из 10 человек уже готов — тебе дописать 5 запросов по одной строке (Where, Select, OrderBy, First, Count). Потом перепиши ХОТЯ БЫ один обычным циклом for+if и увидь, насколько LINQ короче.', 30,
+    [l('101 LINQ samples', 'https://learn.microsoft.com/samples/dotnet/try-samples/101-linq-samples/')],
+    {
+      sandbox: 'dotnetfiddle',
+      doneWhen: 'Все 5 запросов выводят правильный результат, и ты переписал хотя бы один циклом — понял, что LINQ короче.',
+      starter: `using System;
+using System.Collections.Generic;
+using System.Linq;
+
+record Person(string Name, int Age, string City);
+
+var people = new List<Person>
+{
+    new("Anna", 28, "Essen"),    new("Ben", 34, "Dortmund"),
+    new("Clara", 22, "Bochum"),  new("David", 41, "Essen"),
+    new("Eva", 30, "Dortmund"),  new("Felix", 19, "Bochum"),
+    new("Greta", 45, "Essen"),   new("Hans", 27, "Dortmund"),
+    new("Ida", 38, "Bochum"),    new("Jonas", 33, "Essen"),
+};
+
+// 1) Where:   люди старше 30
+var over30 = people.Where(p => p.Age > 30).ToList();
+
+// 2) Select:  ТОЛЬКО имена (List<string>) — ТВОЯ СТРОЧКА
+// 3) OrderBy: отсортируй по возрасту — ТВОЯ СТРОЧКА
+// 4) First:   первый человек из "Essen" — ТВОЯ СТРОЧКА
+// 5) Count:   сколько людей из "Dortmund" — ТВОЯ СТРОЧКА
+
+Console.WriteLine($"Старше 30: {over30.Count}");`,
+    }),
   t('cs-01', 'csharp', 'practice', 'Докажи deferred execution в LINQ',
     'Напиши пример, где LINQ-запрос выполняется не при объявлении, а при перечислении (докажи через side effect в Select). Объясни разницу IEnumerable vs IQueryable: где реально выполняется код.', 60,
     [l('MS Docs: deferred execution', 'https://learn.microsoft.com/dotnet/standard/linq/deferred-execution-lazy-evaluation')]),
@@ -367,10 +466,12 @@ const job: TaskSeed[] = [
  * к 25.11 экзамен автоматически становится приоритетом.
  */
 const WEAVE: Track[] = [
-  // разминка: мягкий вход по всем основным трекам
-  'algo', 'csharp', 'backend', 'sql', 'algo',
-  // фаза 1: разгон, диагностика экзамена, все треки по кругу
-  'exam', 'csharp', 'backend', 'algo', 'sql', 'tests', 'job', 'csharp',
+  // модуль 0 — разгон: всё в браузере (dotnetfiddle), одна среда, по нарастающей.
+  // Никакой установки SDK: сначала уверенно пишем и запускаем C#/алгоритмы.
+  'algo', 'csharp', 'algo', 'algo', 'csharp', 'algo',
+  // фаза 1: подключаем экзамен, бэкенд (тут уже нужен .NET SDK), sql, тесты
+  'exam', 'backend', 'sql', 'csharp', 'algo', 'tests', 'job', 'csharp',
+  'exam', 'backend', 'algo', 'sql', 'csharp', 'devops', 'algo', 'tests',
   'algo', 'backend', 'exam', 'devops', 'sql', 'csharp', 'algo', 'tests',
   'backend', 'job', 'exam', 'algo', 'csharp', 'devops', 'sql', 'backend',
   'algo', 'tests', 'job', 'exam', 'csharp', 'backend', 'algo', 'devops',

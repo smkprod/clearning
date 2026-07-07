@@ -15,6 +15,9 @@ export interface TaskLink {
   url: string;
 }
 
+/** Где выполнять задачу «в браузере» — открывается по кнопке «Песочница». */
+export type Sandbox = 'dotnetfiddle' | 'sqlbolt' | 'leetcode';
+
 export interface Task {
   id: string;
   track: Track;
@@ -22,6 +25,9 @@ export interface Task {
   title: string;
   detail: string; // что конкретно сделать
   links?: TaskLink[]; // теория/справка к задаче
+  starter?: string; // стартовый каркас кода: вставь в песочницу и допиши
+  doneWhen?: string; // критерий «готово» — когда задача считается сделанной
+  sandbox?: Sandbox; // где выполнять в браузере, без установки
   estMin: number;
   done: boolean;
   doneDate: string | null;

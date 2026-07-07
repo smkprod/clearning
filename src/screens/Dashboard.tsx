@@ -5,6 +5,7 @@ import { TrackBadge } from '../components/TrackBadge';
 import { ProgressBar } from '../components/ProgressBar';
 import { MinutesModal } from '../components/MinutesModal';
 import { TaskLinks } from '../components/TaskLinks';
+import { TaskPractice } from '../components/TaskPractice';
 import { challengeStreak, examPace, jobReadinessPercent, studyStreak, totalMinutes, weekMinutes } from '../utils/stats';
 import { formatDate, formatMinutes, todayStr } from '../utils/date';
 import { isDue } from '../utils/leitner';
@@ -139,6 +140,7 @@ export function Dashboard({ onNavigateCards, onNavigateProjects }: Props) {
               <TrackBadge track={task.track} />
               <div className={styles.itemTitle}>{task.title}</div>
               <div className={styles.itemDetail}>{task.detail}</div>
+              <TaskPractice task={task} />
               <TaskLinks links={task.links} />
               <div className={styles.itemMeta}>
                 ~{task.estMin} мин · {TASK_TYPE_LABELS[task.type]}
