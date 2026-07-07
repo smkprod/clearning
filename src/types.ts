@@ -25,6 +25,7 @@ export interface Task {
   title: string;
   detail: string; // что конкретно сделать
   links?: TaskLink[]; // теория/справка к задаче
+  realWorld?: string; // где это реально применяется в проектах/на работе
   starter?: string; // стартовый каркас кода: вставь в песочницу и допиши
   doneWhen?: string; // критерий «готово» — когда задача считается сделанной
   sandbox?: Sandbox; // где выполнять в браузере, без установки

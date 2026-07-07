@@ -14,7 +14,7 @@ const SANDBOX: Record<Sandbox, { label: string; url: string }> = {
  */
 export function TaskPractice({ task }: { task: Task }) {
   const [copied, setCopied] = useState(false);
-  if (!task.doneWhen && !task.starter && !task.sandbox) return null;
+  if (!task.realWorld && !task.doneWhen && !task.starter && !task.sandbox) return null;
 
   const sandbox = task.sandbox ? SANDBOX[task.sandbox] : null;
 
@@ -31,6 +31,12 @@ export function TaskPractice({ task }: { task: Task }) {
 
   return (
     <div className={styles.wrap}>
+      {task.realWorld && (
+        <div className={styles.realWorld}>
+          <b>Где это в реальном коде</b>&nbsp; {task.realWorld}
+        </div>
+      )}
+
       {task.doneWhen && (
         <div className={styles.doneWhen}>
           <b>Готово когда</b>&nbsp; {task.doneWhen}
